@@ -1,0 +1,116 @@
+<!DOCTYPE HTML>
+
+<html>
+<head>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+</head> 
+<body>
+
+<div class="container" id="cont">
+<div id="pagination"> </div>
+</div>
+
+
+<script>
+
+let value_row=({{b|safe}});
+
+var state={
+"querySet":value_row,
+"page":1,
+"rows":4,
+  }   
+var data=pagination(state.querySet, state.page , state.rows);
+
+function pagination(querySet, page, rows)
+ {
+ var trimStart = (page - 1)*rows
+ var trimEnd = trimStart + rows
+ 
+ var trimmedData = querySet.slice(trimStart,trimEnd)
+ 
+ var pages = Math.ceil(querySet.length / rows )
+ 
+ return {
+     "querySet":trimmedData,
+     "pages":pages,
+ }
+ } 
+  
+var total_pages=Math.ceil(state.querySet.length / state.rows )
+/* for ( var a=1; a<= tot_pages; a++)
+{
+state.page=a;
+data=pagination(state.querySet,state.page,state.rows); 
+console.log(data.pages);
+console.log(data.querySet);
+console.log("my_tab_"+a);
+}
+
+*/
+var wrapper = "";
+for (var page=1; page <=total_pages; page++)
+	{
+	wrapper+="<button value="+page+" class='page btn btn-sm btn-info'>"+page+"</button>";
+	}
+$("#pagination").html(wrapper);
+/*$('.page').click(function()
+{
+	//alert("Button is Working");
+	$('#my_tab').empty();
+	state.page = $(this).val();
+	myScript(data.querySet,"my_tab");
+});
+*/
+
+ function div_tags(pages){
+ div_tag="";
+for ( var a=1; a<= pages; a++){
+	div_tag += "<div class='col-sm' id='my_tab_"+a+"'>"+"</div>";
+	$('#cont').html(div_tag);
+}
+}
+div_tags(total_pages);
+for ( var a=1; a<= total_pages; a++){
+state.page=a;
+data=pagination(state.querySet,state.page,state.rows)
+query=data.querySet;
+tab=myScript(query);
+$('#'+'my_tab_'+a).html(tab);
+}
+function myScript(input2)
+{
+let emp=(input2);
+
+var b="<table class='table table-bordered'><thead>"
+for (i in emp[0]){
+    var a= "<th scope='col'>"+i+"</th>";
+    b+=a;
+}
+
+b+="</thead>";
+var temp="<tbody>";
+for (a in emp) {
+    temp += "<tr>";
+    for (x in emp[1]) {
+    var html_1 ="<td>"+emp[a][x]+"</td>";
+    temp+=html_1;
+    }
+temp+="</tr>";
+}
+b+=temp;
+b+="</tbody></table>";
+return b;
+}
+$(".time").each(function(){
+$(this).parent("td").css("text-align","right")
+});	
+
+
+</script>
+</body>
+</html>
+
+

@@ -1,0 +1,26 @@
+
+<html>
+<head>
+</head>
+<body>
+<script>
+
+function prod(a) {
+var text="";
+var b=a;
+for (i=0 ; i < 11 ;i++)
+{
+text += "The Product of "+b+" and "+i+" is "+b*i+"<br>" ;
+}
+return document.getElementById("demo").innerHTML=text;
+}
+function prod_display() {
+var a =prompt("Please Enter The number :")
+prod(a);
+}
+
+</script>
+<p id="demo"></p>
+<button onclick= "prod_display()"> Click to find the Product!</button>
+</body>
+</html>
